@@ -60,8 +60,8 @@ def missed_weeks(grid: pd.DataFrame) -> pd.DataFrame:
         var_name="week_ending",
         value_name="hours_worked",
     )
-    missed = long[long["hours_worked"] == 0]
-    return missed.sort_values(["employee_id", "week_ending"]).reset_index(drop=True)
+    passed = long[long["hours_worked"] == 0]
+    return passed.sort_values(["employee_id", "week_ending"]).reset_index(drop=True)
 
 
 
