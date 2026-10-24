@@ -1,7 +1,25 @@
-Write your reflection here.
+The main idea in this assignment was lineage: 
+each pipeline step returns a wider copy of the frame and 
+never changes the raw columns. In Step 1 I used vectorized .str
+methods instead of apply. clean_employee_id needed .str.zfill(3) 
+because "E4" has to become "E004" or the roster merge on employee_id 
+won’t match it.
 
-See reflection.md for what makes a good reflection — be specific, use the
-terminology from this assignment (grain, long vs. wide, vectorized .str methods,
-coerce, NaT, pd.to_datetime format, .dt, concat, ignore_index, group by, named
-aggregation, reset_index, pivot_table, fill_value, melt, lineage), and make it
-actionable.
+What I didn’t understand at first was errors="coerce" and NaT. 
+I now understand that coerce turns unreadable values into NaN 
+(or NaT for dates) instead of raising an error, and NaT is the date 
+version of NaN. In parse_pay_date, I parse the column twice, once as
+US dates and once as ISO dates, and use us.fillna(iso) to combine the 
+results. Each pass leaves NaT where the other format applies. I still 
+want practice predicting which values become NaT before I run the code.
+
+Most of my struggles were small mistakes rather than big concepts. 
+I typed rest_index instead of reset_index, which failed the hours_grid 
+tests. I assigned columns.name = None, which broke the lineage rule, and 
+rename_axis(columns=None) fixed it. I used the wrong import path in the 
+app, and I used the cleaned employee_id where the warning needed the raw 
+employeeid. Reading the test output closely told me what to fix each time.
+
+For next steps, I’ll run ruff check as I write instead of at the end, 
+and I’ll practice small pd.to_datetime and errors="coerce" examples on 
+messy data until NaT feels natural.
