@@ -52,8 +52,8 @@ def clean_employee_id(ids: pd.Series) -> pd.Series:
     - The mistake people make: stopping after `.upper()`. `"E4"` is not `"E004"`,
       and Step 2's merge will not match it to anyone on the roster.
     """
-    cleaned = ids.str.strip().str.upper()
-    num = cleaned.str[1:].str.zfill(3)
+    clean = ids.str.strip().str.upper()
+    num = clean.str[1:].str.zfill(3)
     result = "E" + num
     return result
 
