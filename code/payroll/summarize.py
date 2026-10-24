@@ -60,7 +60,7 @@ def add_roster(history: pd.DataFrame, employees: pd.DataFrame) -> pd.DataFrame:
     """
     roster = employees.copy()
     roster["display_name"] = format_name(roster["name"])
-    roster = roster[["employee_id","display_name","department"]]
+    roster = roster[["employee_id", "display_name", "department"]]
     return history.merge(roster, on="employee_id", how="left")
 
 
@@ -77,7 +77,6 @@ def build_history(exports: list, employees: pd.DataFrame) -> pd.DataFrame:
     dated = add_date_parts(clean)
     final = add_roster(dated, employees)
     return final
-    
 
 
 def summarize_employees(history: pd.DataFrame) -> pd.DataFrame:
@@ -109,12 +108,13 @@ def summarize_employees(history: pd.DataFrame) -> pd.DataFrame:
     need to.
     """
     out = (
-        history.groupby(["employee_id", "display_name","department"]).agg(
-            weeks_paid = ("week_ending", "count"),
-            total_hours = ("hours_worked", "sum"),
-            total_pay = ("gross_pay","sum"),
-            avg_hours = ("hours_worked", "mean"),
-            overtime_weeks = ("hours_worked", lambda h: (h > 40.0).sum()),
+        history.groupby(["employee_id", "display_name", "department"])
+        .agg(
+            weeks_paid=("week_ending", "count"),
+            total_hours=("hours_worked", "sum"),
+            total_pay=("gross_pay", "sum"),
+            avg_hours=("hours_worked", "mean"),
+            overtime_weeks=("hours_worked", lambda h: (h > 40.0).sum()),
         )
         .reset_index()
     )

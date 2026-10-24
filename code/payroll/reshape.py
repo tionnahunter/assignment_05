@@ -34,15 +34,13 @@ def hours_grid(history: pd.DataFrame) -> pd.DataFrame:
     `fill_value=0`.
     """
     grid = history.pivot_table(
-        index = ["employee_id", "display_name"],
-        columns = "week_ending",
-        values = "hours_worked",
-        aggfunc = "sum",
-        fill_value = 0,
+        index=["employee_id", "display_name"],
+        columns="week_ending",
+        values="hours_worked",
+        aggfunc="sum",
+        fill_value=0,
     )
-    grid.columns.name = None
-    return grid.rest_index()
-
+    return grid.rename_axis(columns=None).reset_index()
 
 def missed_weeks(grid: pd.DataFrame) -> pd.DataFrame:
     """Every (employee, week) with zero hours in the grid — the weeks people missed.
@@ -64,7 +62,6 @@ def missed_weeks(grid: pd.DataFrame) -> pd.DataFrame:
     return passed.sort_values(["employee_id", "week_ending"]).reset_index(drop=True)
 
 
-
 def pay_by_month(history: pd.DataFrame) -> pd.DataFrame:
     """Total gross pay by month (rows) and department (columns), to the cent.
 
@@ -83,5 +80,4 @@ def pay_by_month(history: pd.DataFrame) -> pd.DataFrame:
         aggfunc="sum",
         fill_value=0.0,
     ).round(2)
-    table.columns.name = None
-    return table.reset_index()
+    return table.rename_axis(columns=None).reset_index()

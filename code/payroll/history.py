@@ -84,10 +84,15 @@ def clean_number(values: pd.Series) -> pd.Series:
     - This is `clean_currency` from Assignment 04, with no `apply` — the `.str`
       methods do the looping for you.
     """
-    cleaned = values.str.replace("$", "", regex=False).str.replace(",","", regex=False).str.strip()
+    cleaned = (
+        values.str.replace("$", "", regex=False)
+        .str.replace(",", "", regex=False)
+        .str.strip()
+    )
     num = pd.to_numeric(cleaned, errors="coerce")
     result = num.fillna(0.0)
     return result
+
 
 def parse_pay_date(values: pd.Series) -> pd.Series:
     """Parse pay dates written either way; return a datetime Series. Unreadable -> NaT.
@@ -113,8 +118,8 @@ def parse_pay_date(values: pd.Series) -> pd.Series:
       single format cannot read both styles — and guessing (leaving `format=` off)
       is how `"03/04/2026"` silently becomes April 3rd on someone's laptop.
     """
-    us = pd.to_datetime(values, format = "%m/%d/%Y", errors = "coerce")
-    iso = pd.to_datetime(values, format = "%Y-%m-%d", errors = "coerce")
+    us = pd.to_datetime(values, format="%m/%d/%Y", errors="coerce")
+    iso = pd.to_datetime(values, format="%Y-%m-%d", errors="coerce")
     result = us.fillna(iso)
     return result
 
@@ -135,7 +140,6 @@ def combine_exports(exports: list) -> pd.DataFrame:
     - No `.copy()` needed — `concat` always builds a new frame.
     """
     return pd.concat(exports, ignore_index=True)
-
 
 
 def add_clean_columns(history: pd.DataFrame) -> pd.DataFrame:
@@ -169,7 +173,6 @@ def add_clean_columns(history: pd.DataFrame) -> pd.DataFrame:
     out["rate_usd"] = clean_number(out["rate"])
     out["gross_pay"] = clean_number(out["total"])
     return out
-
 
 
 def add_date_parts(history: pd.DataFrame) -> pd.DataFrame:
