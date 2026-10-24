@@ -14,6 +14,7 @@ department and dates the user picks.
 Run it:  Run and Debug -> "Streamlit Run: Current File"
 Test it: pytest tests/test_pipeline.py -k app
 """
+
 # --- The page ---------------------------------------------------------------------
 #
 # No scaffolding. Every function this page needs already exists in the payroll

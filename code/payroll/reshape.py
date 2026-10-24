@@ -42,6 +42,7 @@ def hours_grid(history: pd.DataFrame) -> pd.DataFrame:
     )
     return grid.rename_axis(columns=None).reset_index()
 
+
 def missed_weeks(grid: pd.DataFrame) -> pd.DataFrame:
     """Every (employee, week) with zero hours in the grid — the weeks people missed.
 
