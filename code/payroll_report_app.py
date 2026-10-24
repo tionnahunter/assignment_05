@@ -47,11 +47,11 @@ Test it: pytest tests/test_pipeline.py -k app
 # writing a groupby or a pivot_table here, that logic belongs in the package.
 import streamlit as st
 
-from payroll.loaders import load_employees, load_export  # check these paths
+from payroll.extract import load_employees, load_export
 from payroll.reshape import hours_grid, missed_weeks, pay_by_month
 from payroll.summarize import build_history, summarize_employees
 
-st.title("Salt City Coffee: Quarter Payroll Report")
+st.title("Salt City Coffee — Quarterly Payroll Report")
 st.write(
     "Upload the weekly payroll exports, then pick a department and a date range "
     "to see hours, pay, and missed shifts."
@@ -69,8 +69,7 @@ uploads = st.file_uploader(
 if uploads:
     history = build_history([load_export(u) for u in uploads], roster)
 
-    # Rows whose ID is not on the roster have no department.
-    unmatched = history.loc[history["department"].isna(), "employee_id"].unique()
+    unmatched = history.loc[history["department"].isna(), "employeeid"].unique()
     if len(unmatched) > 0:
         st.warning(
             "These employee IDs are not on the roster and are left out of the "
